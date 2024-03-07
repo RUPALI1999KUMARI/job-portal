@@ -1,0 +1,30 @@
+CREATE TABLE recruiter (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    company VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE candidate (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE job (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    recruiter_id INTEGER REFERENCES recruiter(id) NOT NULL,
+    position VARCHAR(100) NOT NULL,
+    job_description text NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE applied_job (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    candidate_id INTEGER REFERENCES candidate(id) NOT NULL,
+    job_id INTEGER REFERENCES job(id) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    UNIQUE (candidate_id, job_id)
+);
